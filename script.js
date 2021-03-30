@@ -5,9 +5,11 @@ const hitDamageInput = controlsContainer.querySelector("#hit-damage-input");
 const healButton = controlsContainer.querySelector("#heal-button");
 const healInput = controlsContainer.querySelector("#heal-amount-input");
 const addHeart = controlsContainer.querySelector("#add-heart-container-button");
+const overHealButton = controlsContainer.querySelector("#overheal-button");
+const overHealInput = controlsContainer.querySelector("#overheal-amount-input");
 let health = 35;
 let maxHealth = 44;
-let overHealth = 2;
+let overHealCount = 0;
 
 function randint(lo, hi) {
   return Math.floor(Math.random() * (hi - lo) + lo);
@@ -15,11 +17,16 @@ function randint(lo, hi) {
 
 function updateHeartsDisplay() {
   let quartersToFill = health;
-  // if (overHealth > 0) {
-  //   let newHeart = heartsContainer.querySelector(".heart").cloneNode(true);
-  //   newHeart.classList.add(".heart.extra")
-  //   heartsContainer.appendChild(newHeart);
-  // }
+  if (overHealCount > 0 && heartsContainer.querySelector(".heartextra") == null) {
+    for (let i = 0; i < overHealCount; i++) {
+      let newHeart = heartsContainer.querySelector(".heart").cloneNode(true);
+      newHeart.classList.add("heartextra")
+      heartsContainer.appendChild(newHeart);
+    }
+  }
+  else if (overHealCount == 0) {
+    heartsContainer.querySelectorAll('.heartextra').forEach(e => e.remove());
+  }
   for (const heart of heartsContainer.querySelectorAll(".heart")) {
     if (quartersToFill) {
       let quarters = Math.min(quartersToFill, 4);
@@ -34,6 +41,9 @@ function updateHeartsDisplay() {
 hitButton.addEventListener("click", function () {
   let damage = Number(hitDamageInput.value);
   health = Math.max(0, health - damage);
+  if (health <= maxHealth && overHealCount > 0) {
+    overHealCount = 0;
+  }
   updateHeartsDisplay();
 });
 
@@ -51,3 +61,10 @@ addHeart.addEventListener("click", function () {
   maxHealth += 4;
   updateHeartsDisplay();
 });
+
+overHealButton.addEventListener("click", function () {
+  overHealCount = Math.max(overHealCount, overHealInput.value);
+  health = maxHealth;
+  health += overHealCount * 4;
+  updateHeartsDisplay();
+})
