@@ -17,6 +17,7 @@ function randint(lo, hi) {
 
 function updateHeartsDisplay() {
   let quartersToFill = health;
+  heartsContainer.querySelectorAll('.heartextra').forEach(e => e.remove());
   if (overHealCount > 0 && heartsContainer.querySelector(".heartextra") == null) {
     for (let i = 0; i < overHealCount; i++) {
       let newHeart = heartsContainer.querySelector(".heart").cloneNode(true);
@@ -58,13 +59,18 @@ healButton.addEventListener("click", function () {
 addHeart.addEventListener("click", function () {
   let newHeart = heartsContainer.querySelector(".heart").cloneNode(true);
   heartsContainer.appendChild(newHeart);
+  health += 4;
   maxHealth += 4;
   updateHeartsDisplay();
 });
 
 overHealButton.addEventListener("click", function () {
-  overHealCount = Math.max(overHealCount, overHealInput.value);
-  health = maxHealth;
-  health += overHealCount * 4;
+  //overHealCount = Math.max(overHealCount, overHealInput.value);
+  if (overHealInput.value > overHealCount) {
+    overHealCount = overHealInput.value
+    health = maxHealth;
+    health += overHealCount * 4;
+  }
+
   updateHeartsDisplay();
 })
