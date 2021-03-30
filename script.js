@@ -7,7 +7,7 @@ const healInput = controlsContainer.querySelector("#heal-amount-input");
 const addHeart = controlsContainer.querySelector("#add-heart-container-button");
 let health = 35;
 let maxHealth = 44;
-let overHealth = 0;
+let overHealth = 2;
 
 function randint(lo, hi) {
   return Math.floor(Math.random() * (hi - lo) + lo);
@@ -15,6 +15,11 @@ function randint(lo, hi) {
 
 function updateHeartsDisplay() {
   let quartersToFill = health;
+  // if (overHealth > 0) {
+  //   let newHeart = heartsContainer.querySelector(".heart").cloneNode(true);
+  //   newHeart.classList.add(".heart.extra")
+  //   heartsContainer.appendChild(newHeart);
+  // }
   for (const heart of heartsContainer.querySelectorAll(".heart")) {
     if (quartersToFill) {
       let quarters = Math.min(quartersToFill, 4);
