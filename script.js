@@ -59,7 +59,12 @@ healButton.addEventListener("click", function () {
 addHeart.addEventListener("click", function () {
   let newHeart = heartsContainer.querySelector(".heart").cloneNode(true);
   heartsContainer.appendChild(newHeart);
-  health += 4;
+  if (health < maxHealth) {
+    health = maxHealth;
+  }
+  if (health > maxHealth) {
+    health += 4;
+  }
   maxHealth += 4;
   updateHeartsDisplay();
 });
